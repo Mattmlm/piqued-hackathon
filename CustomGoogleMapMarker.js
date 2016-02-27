@@ -1,3 +1,5 @@
+// http://humaan.com/custom-html-markers-google-maps/
+
 function CustomMarker(latlng, map, args) {
 	this.latlng = latlng;	
 	this.args = args;	

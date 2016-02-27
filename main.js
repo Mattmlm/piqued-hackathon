@@ -1,4 +1,4 @@
-// maps.js
+// main.js
 
 
 // The following example creates complex markers to indicate beaches near
