@@ -87,7 +87,7 @@ var foursquareOnSuccess = function(data) {
         return null;
       }
 
-      posts.push(item.venue);
+      venues.push(item.venue);
     });
   });
 
