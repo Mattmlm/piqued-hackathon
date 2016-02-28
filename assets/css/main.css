@@ -104,7 +104,7 @@ header {
   width: 20px;
 }
 
-.mapCell {
+.map-section, .feed-section {
 	position: absolute;
 	top: 60px;
 	bottom: 0px;
@@ -118,6 +118,8 @@ header {
 
 .marker-image {
 	border-radius: 50%;
+  border-color: white;
+  border-width: 1px;
 }
 
 footer {

@@ -9,6 +9,10 @@ var map = new google.maps.Map(document.getElementById('map'), {
 });
 
 var displayVenues = function(venues) {
+  displayVenuesOnMap(venues);
+};
+
+var displayVenuesOnMap = function(venues) {
   venues.forEach(function(venue) {
     var myLatlng = new google.maps.LatLng(venue.location.lat, venue.location.lng);
 
@@ -30,23 +34,26 @@ var displayVenues = function(venues) {
   });
 }
 
+foursquarePosts(-33.9, 151.2, 5000, "", displayVenues);
+
+google.maps.event.addDomListener(div, "click", function(event) {
+  alert('You clicked on a custom marker!');
+  google.maps.event.trigger(self, "click");
+});
+
 // Try HTML5 geolocation.
-if (navigator.geolocation) {
-  navigator.geolocation.getCurrentPosition(function(position) {
-    var pos = {
-      lat: position.coords.latitude,
-      lng: position.coords.longitude
-    };
+// if (navigator.geolocation) {
+//   navigator.geolocation.getCurrentPosition(function(position) {
+//     var pos = {
+//       lat: position.coords.latitude,
+//       lng: position.coords.longitude
+//     };
 
-    var infoWindow = new google.maps.InfoWindow({map: map});
+//     map.setCenter(pos);
 
-    infoWindow.setPosition(pos);
-    infoWindow.setContent('Location found.');
-    map.setCenter(pos);
+//     PiquedGlobal["currentLocation"] = pos;
 
-    PiquedGlobal["currentLocation"] = pos;
-
-    foursquarePosts(pos.lat, pos.lng, 5000, "", displayVenues);
-  });
-}
-  
+//     foursquarePosts(pos.lat, pos.lng, 5000, "", displayVenues);
+//   });
+// }
+//   
