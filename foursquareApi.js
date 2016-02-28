@@ -22,35 +22,11 @@ var stringify = function(query) {
   return query.match(/\W*(\w*)/)[1];
 };
 
-// generates a foursquare api url from parameters passed in (*Required)
-// *lat float latitude of location
-// *lng float longitude of location
-// *radius integer radius to extend search outward
-// query string filter search parameter
-var generateFoursquareReqUrl = function(lat, lng, radius, query) {
-  if (!isNumber(lat) || !isNumber(lng) || !isNumber(radius)) {
-    jsError("Could not generate request Url!");
-    return null;
-  }
-
-  var reqUrl = "https://api.foursquare.com/v2/venues/explore?ll="+lat+","+lng+"&radius"+radius+"&venuePhotos=1&oauth_token=CLLNSCL4FMW0PG0SHBIENOKCKWZI3Z4TTDRRFJDK4JEMJBUG&v=20160226";
-  if (query) {
-    // make sure to use stringify to prevent code injection
-    if (!(safeQuery = stringify(query))) {
-      jsError("query included but not a valid string");
-      return null;
-    }
-    reqUrl += "&query="+safeQuery;
-  }
-
-  return reqUrl;
-};
-
 // Function to display venues on page
 // *venues list entire set of venues returned by foursquare in the area
 var displayVenues = function(venues) {
   console.log(venues);
-}
+};
 
 // Function to handle api response data from foursquare and call displayVenues with list of venues
 // *data hash entire data object returned by foursquare
@@ -92,6 +68,30 @@ var foursquareOnSuccess = function(data) {
   });
 
   displayVenues(venues);
+};
+
+// generates a foursquare api url from parameters passed in (*Required)
+// *lat float latitude of location
+// *lng float longitude of location
+// *radius integer radius to extend search outward
+// query string filter search parameter
+var generateFoursquareReqUrl = function(lat, lng, radius, query) {
+  if (!isNumber(lat) || !isNumber(lng) || !isNumber(radius)) {
+    jsError("Could not generate request Url!");
+    return null;
+  }
+
+  var reqUrl = "https://api.foursquare.com/v2/venues/explore?ll="+lat+","+lng+"&radius"+radius+"&venuePhotos=1&cliend_id=DOUDECYXSQ2TKZA0XM52MJNFSJZQ5OQ1QUU0TYSHKNHQWSDC&CLIENT_SECRET=CB2XICDAOYNEGVRVH5HBS2WXBQPWL5PTSFC2NW5SJWD0YI01&v="+(new Date().toLocaleFormat('%Y%m%d'));
+  if (query) {
+    // make sure to use stringify to prevent code injection
+    if (!(safeQuery = stringify(query))) {
+      jsError("query included but not a valid string");
+      return null;
+    }
+    reqUrl += "&query="+safeQuery;
+  }
+
+  return reqUrl;
 };
 
 // gets posts from foursquare api (*Required)
