@@ -51,6 +51,10 @@ CustomMarker.prototype.draw = function() {
 	}
 };
 
+CustomMarker.prototype.valueOf = function() {
+	return this.latlng.lat().toString() + " " + this.latlng.lng().toString() + " " + this.args.marker_id
+}
+
 CustomMarker.prototype.remove = function() {
 	if (this.div) {
 		this.div.parentNode.removeChild(this.div);

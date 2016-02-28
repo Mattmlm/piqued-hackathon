@@ -2,6 +2,7 @@
 
 var PiquedGlobal = {}
 PiquedGlobal["overlays"] = []
+PiquedGlobal["overlays_set"] = new Set()
 
 var map = new google.maps.Map(document.getElementById('map'), {
   zoom: 15,
@@ -13,6 +14,7 @@ var displayVenues = function(venues) {
 };
 
 var displayVenuesOnMap = function(venues) {
+  var newPins = []
   venues.forEach(function(venue) {
     var myLatlng = new google.maps.LatLng(venue.location.lat, venue.location.lng);
 
@@ -27,11 +29,25 @@ var displayVenuesOnMap = function(venues) {
           marker_id: venue.id
         }
       );
-
-      PiquedGlobal["overlays"].push(overlay)
+      newPins.push(overlay)
     }
-
   });
+
+  var originalPins = PiquedGlobal["overlays_set"];
+  var pinsToAdd = [];
+
+  newPins.forEach(function(overlay) {
+    if (!originalPins.has(overlay.valueOf())) {
+      console.log(overlay.args.marker_id)
+      pinsToAdd.push(overlay);
+      PiquedGlobal["overlays"].push(overlay);
+    }
+  });
+
+  pinsToAdd.forEach(function(overlay) {
+    PiquedGlobal["overlays_set"].add(overlay.valueOf())
+  });
+
 }
 
 foursquarePosts(-33.9, 151.2, 5000, "", displayVenues);
