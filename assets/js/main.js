@@ -85,6 +85,7 @@ var getVenueType = function(venue) {
 };
 
 var displayVenuesOnList = function(venues) {
+  $('#feed > ul').empty();
   venues.forEach(function(venue) {
     var id = venue.id;
     var image = getVenueImage(venue, 260);
