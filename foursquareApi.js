@@ -1,5 +1,10 @@
 // function to catch generic errors (*Required)
-var jsError = function(text) {
+// *text string what to print
+// data object will console.log for debugging
+var jsError = function(text, data) {
+  if (data) {
+    console.log(data);
+  }
   alert(text);
 };
 
@@ -35,18 +40,18 @@ var displayVenues = function(venues) {
 var foursquareOnSuccess = function(data) {
   var response = data.response;
   if (!response) {
-    jsError("Invalid response from foursquare");
+    jsError("Invalid response from foursquare", data);
     return null;
   }
 
   if (response.totalResults <= 0) {
-    jsError("No results found in foursquare");
+    jsError("No results found in foursquare", data);
     return null;
   }
 
   var groups = response.groups;
   if (!groups || groups.length <= 0) {
-    jsError("No groups found in foursquare");
+    jsError("No groups found in foursquare", data);
     return null;
   }
 
@@ -77,15 +82,15 @@ var foursquareOnSuccess = function(data) {
 // query string filter search parameter
 var generateFoursquareReqUrl = function(lat, lng, radius, query) {
   if (!isNumber(lat) || !isNumber(lng) || !isNumber(radius)) {
-    jsError("Could not generate request Url!");
+    jsError("Could not generate request Url!", [lat, lng, radius]);
     return null;
   }
 
-  var reqUrl = "https://api.foursquare.com/v2/venues/explore?ll="+lat+","+lng+"&radius"+radius+"&venuePhotos=1&cliend_id=DOUDECYXSQ2TKZA0XM52MJNFSJZQ5OQ1QUU0TYSHKNHQWSDC&CLIENT_SECRET=CB2XICDAOYNEGVRVH5HBS2WXBQPWL5PTSFC2NW5SJWD0YI01&v="+(new Date().toLocaleFormat('%Y%m%d'));
+  var reqUrl = "https://api.foursquare.com/v2/venues/explore?ll="+lat+","+lng+"&radius"+radius+"&venuePhotos=1&client_id=DOUDECYXSQ2TKZA0XM52MJNFSJZQ5OQ1QUU0TYSHKNHQWSDC&client_secret=CB2XICDAOYNEGVRVH5HBS2WXBQPWL5PTSFC2NW5SJWD0YI01&v="+(new Date().toLocaleFormat('%Y%m%d'));
   if (query) {
     // make sure to use stringify to prevent code injection
     if (!(safeQuery = stringify(query))) {
-      jsError("query included but not a valid string");
+      jsError("query included but not a valid string", query);
       return null;
     }
     reqUrl += "&query="+safeQuery;
@@ -102,7 +107,7 @@ var generateFoursquareReqUrl = function(lat, lng, radius, query) {
 var foursquarePosts = function(lat, lng, radius, query) {
   var reqUrl = generateFoursquareReqUrl(lat, lng, radius, query);
   if (!reqUrl) {
-    jsError("Could not generate valid reqUrl from foursquarePosts params");
+    jsError("Could not generate valid reqUrl from foursquarePosts params", [lat, lng, radius, query]);
     return null;
   }
 
