@@ -95,7 +95,7 @@ var displayVenuesOnList = function(venues) {
 
     console.log([id, image, name, type, address, distance]);
     if (id && name && type && address && distance) {
-      $('#feed').append(venueHtml(id, image, name, type, address, distance));
+      $('#feed').prepend(venueHtml(id, image, name, type, address, distance));
     }
   });
 };
