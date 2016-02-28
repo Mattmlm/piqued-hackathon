@@ -133,7 +133,7 @@ var generateFoursquareReqUrl = function(lat, lng, radius, query) {
   }
 
   var date = new Date();
-  var dateString = digits(date.getFullYear(), 4) + digits(date.getMonth(), 2) + digits(date.getDay(), 2);
+  var dateString = digits(date.getFullYear(), 4) + digits(date.getMonth()+1 , 2) + digits(date.getDate(), 2);
   var reqUrl = "https://api.foursquare.com/v2/venues/explore?ll="+lat+","+lng+"&radius"+radius+"&venuePhotos=1&client_id=DOUDECYXSQ2TKZA0XM52MJNFSJZQ5OQ1QUU0TYSHKNHQWSDC&client_secret=CB2XICDAOYNEGVRVH5HBS2WXBQPWL5PTSFC2NW5SJWD0YI01&v="+dateString;
   if (query) {
     // make sure to use stringify to prevent code injection
