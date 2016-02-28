@@ -36,9 +36,8 @@ var displayVenuesOnMap = function(venues) {
 
 foursquarePosts(-33.9, 151.2, 5000, "", displayVenues);
 
-google.maps.event.addDomListener(div, "click", function(event) {
-  alert('You clicked on a custom marker!');
-  google.maps.event.trigger(self, "click");
+google.maps.event.addListener(map, "dragend", function(event) {
+  foursquarePosts(map.getCenter().lat(), map.getCenter().lng(), 5000, "", displayVenues);
 });
 
 // Try HTML5 geolocation.
