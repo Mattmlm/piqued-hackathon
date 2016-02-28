@@ -115,3 +115,7 @@ header {
 #map {
 	height: 100%;
 }
+
+.marker-image {
+	border-radius: 50%;
+}
