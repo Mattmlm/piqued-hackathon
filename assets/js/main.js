@@ -102,7 +102,7 @@ var displayVenuesOnList = function(venues) {
     var placeCards = PiquedGlobal['placeCards'];
     if (placeCards) {
       placeCards.refresh();
-      placeCards.scrollTo(0,0);
+      placeCards.scrollTo(0, 0, 1500, IScroll.utils.ease.circular);
     } else {
       PiquedGlobal['placeCards'] = new IScroll('#feed');
     }
