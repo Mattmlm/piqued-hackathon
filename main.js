@@ -5,6 +5,8 @@ PiquedGlobal["overlays"] = []
 PiquedGlobal["overlays_set"] = new Set()
 
 var map = new google.maps.Map(document.getElementById('map'), {
+  mapTypeControl: false,
+  streetViewControl: false,
   zoom: 15,
   center: {lat: -33.9, lng: 151.2}
 });
