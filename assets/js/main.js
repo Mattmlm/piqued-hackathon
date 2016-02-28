@@ -99,8 +99,10 @@ var displayVenuesOnList = function(venues) {
     }
   });
   setTimeout(function () {
-    if (PiquedGlobal['placeCards']) {
-      PiquedGlobal['placeCards'].refresh();
+    var placeCards = PiquedGlobal['placeCards'];
+    if (placeCards) {
+      placeCards.refresh();
+      placeCards.scrollTo(0,0);
     } else {
       PiquedGlobal['placeCards'] = new IScroll('#feed');
     }
