@@ -4,7 +4,7 @@ var PiquedGlobal = {}
 PiquedGlobal["overlays"] = []
 
 var map = new google.maps.Map(document.getElementById('map'), {
-  zoom: 10,
+  zoom: 15,
   center: {lat: -33.9, lng: 151.2}
 });
 
@@ -46,7 +46,7 @@ if (navigator.geolocation) {
 
     PiquedGlobal["currentLocation"] = pos;
 
-    foursquarePosts(pos.lat, pos.lng, 1000, "", displayVenues);
+    foursquarePosts(pos.lat, pos.lng, 5000, "", displayVenues);
   });
 }
   
