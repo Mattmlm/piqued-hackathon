@@ -73,7 +73,7 @@ var displayVenuesOnMap = function(venues) {
 };
 
 var venueHtml = function(id, image, name, type, address, distance) {
-  return '<div class="placeCard" id="'+id+'"><img class="placeImg" src="'+image+'" /><div class="placeInfo"><span class="placeName">'+name+'</span><span class="placeType">'+type+'</span><span class="placeAddress">'+address+'</span><span class="placeDistance">'+distance+'</span></div></div>';
+  return '<li class="placeCard" id="'+id+'"><img class="placeImg" src="'+image+'" /><div class="placeInfo"><span class="placeName">'+name+'</span><span class="placeType">'+type+'</span><span class="placeAddress">'+address+'</span><span class="placeDistance">'+distance+'</span></div></li>';
 };
 
 var getVenueType = function(venue) {
@@ -95,9 +95,16 @@ var displayVenuesOnList = function(venues) {
 
     console.log([id, image, name, type, address, distance]);
     if (id && name && type && address && distance) {
-      $('#feed').prepend(venueHtml(id, image, name, type, address, distance));
+      $('#feed > ul').prepend(venueHtml(id, image, name, type, address, distance));
     }
   });
+  setTimeout(function () {
+    if (PiquedGlobal['placeCards']) {
+      PiquedGlobal['placeCards'].refresh();
+    } else {
+      PiquedGlobal['placeCards'] = new IScroll('#feed');
+    }
+  }, 0);
 };
 
 
