@@ -2,7 +2,7 @@
 
 function CustomMarker(latlng, map, args) {
 	this.latlng = latlng;	
-	this.args = args;	
+	this.args = args;
 	this.setMap(map);	
 }
 
@@ -17,14 +17,18 @@ CustomMarker.prototype.draw = function() {
 	if (!div) {
 	
 		div = this.div = document.createElement('div');
-		
+		img = document.createElement("img");
+		img.src = this.args.image_url;
+
 		div.className = 'marker';
+		img.className = 'marker-image';
 		
 		div.style.position = 'absolute';
 		div.style.cursor = 'pointer';
-		div.style.width = '20px';
-		div.style.height = '20px';
-		div.style.background = 'blue';
+		div.style.width = '60px';
+		div.style.height = '60px';
+
+		div.appendChild(img)
 		
 		if (typeof(self.args.marker_id) !== 'undefined') {
 			div.dataset.marker_id = self.args.marker_id;

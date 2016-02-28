@@ -43,6 +43,7 @@ var generateFoursquareReqUrl = function(lat, lng, radius, query) {
     reqUrl += "&query="+safeQuery;
   }
 
+  console.log(reqUrl)
   return reqUrl;
 };
 
