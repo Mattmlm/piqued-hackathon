@@ -11,6 +11,27 @@ var map = new google.maps.Map(document.getElementById('map'), {
 
 var displayVenues = function(venues) {
   displayVenuesOnMap(venues);
+  displayVenuesOnList(venues);
+};
+
+var getVenueImage = function(venue, size) {
+    if (!isNumber(size)) {
+      return null;
+    }
+
+    var photos = venue.photos;
+    if (!photos) {
+      return null;
+    }
+
+    var groups = photos.groups;
+    if (!groups || groups.length < 1) {
+      return null;
+    }
+
+    var photo = groups[0].items[0];
+
+    return photo.prefix + size + photo.suffix
 };
 
 var displayVenuesOnMap = function(venues) {
@@ -18,11 +39,10 @@ var displayVenuesOnMap = function(venues) {
   venues.forEach(function(venue) {
     var myLatlng = new google.maps.LatLng(venue.location.lat, venue.location.lng);
 
-    if (venue.photos.groups[0].items[0]) {
-      var photo = venue.photos.groups[0].items[0]
-      var photoURL = photo.prefix + "60" + photo.suffix
+    var photoURL = getVenueImage(venue, 60);
+    if (photoURL) {
       var overlay = new CustomMarker(
-        myLatlng, 
+        myLatlng,
         map,
         {
           image_url: photoURL,
@@ -48,7 +68,36 @@ var displayVenuesOnMap = function(venues) {
     PiquedGlobal["overlays_set"].add(overlay.valueOf())
   });
 
-}
+};
+
+var venueHtml = function(id, image, name, type, address, distance) {
+  return '<div class="placeCard" id="'+id+'"><img class="placeImg" src="'+image+'" /><div class="placeInfo"><span class="placeName">'+name+'</span><span class="placeType">'+type+'</span><span class="placeAddress">'+address+'</span><span class="placeDistance">'+distance+'</span></div></div>';
+};
+
+var getVenueType = function(venue) {
+    var categories = venue.categories.slice(0,2);
+    if (categories.length < 1) {
+      return null;
+    }
+    return categories.map(function(e) { return e.name; }).join(', ');
+};
+
+var displayVenuesOnList = function(venues) {
+  venues.forEach(function(venue) {
+    var id = venue.id;
+    var image = getVenueImage(venue, 260);
+    var name = venue.name;
+    var type = getVenueType(venue);
+    var address = venue.location.address;
+    var distance = venue.location.distance;
+
+    console.log([id, image, name, type, address, distance]);
+    if (id && name && type && address && distance) {
+      $('#feed').append(venueHtml(id, image, name, type, address, distance));
+    }
+  });
+};
+
 
 foursquarePosts(-33.9, 151.2, 5000, "", displayVenues);
 
@@ -71,4 +120,4 @@ google.maps.event.addListener(map, "dragend", function(event) {
 //     foursquarePosts(pos.lat, pos.lng, 5000, "", displayVenues);
 //   });
 // }
-//   
+//
