@@ -1,3 +1,6 @@
+// last data pulled from foursquareApi
+var lastData;
+
 // function to catch generic errors (*Required)
 // *text string what to print
 // data object will console.log for debugging
@@ -62,43 +65,50 @@ var displayVenues = function(venues) {
 // *data hash entire data object returned by foursquare
 // ===
 // => calls displayVenues with the new list of venues
-var foursquareOnSuccess = function(data) {
-  console.log(data);
-  var response = data.response;
-  if (!response) {
-    jsError("Invalid response from foursquare", data);
-    return null;
+var foursquareOnSuccess = function(callback) {
+  if (typeof(callback) !== 'function') {
+    jsError("Invalid callback function", callback);
+    return function(data) {};
   }
 
-  if (response.totalResults <= 0) {
-    jsError("No results found in foursquare", data);
-    return null;
-  }
-
-  var groups = response.groups;
-  if (!groups || groups.length <= 0) {
-    jsError("No groups found in foursquare", data);
-    return null;
-  }
-
-  var venues = [];
-  groups.forEach(function(group) {
-    var items = group.items;
-    if (!items || items.length <= 0) {
+  return function(data) {
+    lastData = data;
+    var response = data.response;
+    if (!response) {
+      jsError("Invalid response from foursquare", data);
       return null;
     }
 
-    items.forEach(function(item) {
-      var venue = item.venue;
-      if (!venue) {
+    if (response.totalResults <= 0) {
+      jsError("No results found in foursquare", data);
+      return null;
+    }
+
+    var groups = response.groups;
+    if (!groups || groups.length <= 0) {
+      jsError("No groups found in foursquare", data);
+      return null;
+    }
+
+    var venues = [];
+    groups.forEach(function(group) {
+      var items = group.items;
+      if (!items || items.length <= 0) {
         return null;
       }
 
-      venues.push(item.venue);
-    });
-  });
+      items.forEach(function(item) {
+        var venue = item.venue;
+        if (!venue) {
+          return null;
+        }
 
-  displayVenues(venues);
+        venues.push(item.venue);
+      });
+    });
+
+    callback(venues);
+  };
 };
 
 // generates a foursquare api url from parameters passed in (*Required)
@@ -130,7 +140,7 @@ var generateFoursquareReqUrl = function(lat, lng, radius, query) {
 // *lng float longitude of location
 // *radius integer radius to extend search outward
 // query string filter search parameter
-var foursquarePosts = function(lat, lng, radius, query) {
+var foursquarePosts = function(lat, lng, radius, query, callback) {
   var reqUrl = generateFoursquareReqUrl(lat, lng, radius, query);
   if (!reqUrl) {
     jsError("Could not generate valid reqUrl from foursquarePosts params", [lat, lng, radius, query]);
@@ -141,7 +151,7 @@ var foursquarePosts = function(lat, lng, radius, query) {
       type: "GET",
       dataType: "jsonp",
       url: reqUrl,
-      success: foursquareOnSuccess,
+      success: foursquareOnSuccess(callback),
       error: function(err) {
         jsError("Error requesting locations from foursquare: "+err);
       },
