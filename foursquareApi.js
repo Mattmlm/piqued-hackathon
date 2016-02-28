@@ -63,6 +63,7 @@ var displayVenues = function(venues) {
 // ===
 // => calls displayVenues with the new list of venues
 var foursquareOnSuccess = function(data) {
+  console.log(data);
   var response = data.response;
   if (!response) {
     jsError("Invalid response from foursquare", data);
