@@ -111,6 +111,16 @@ var foursquareOnSuccess = function(callback) {
   };
 };
 
+// make integers to a specific length
+var digits = function(num, length) {
+  if (typeof(num) !== 'number' || num < 0 || typeof(length) !== 'number' || length < 0) {
+    jsError("invalid args to digits", [num, length]);
+    return null;
+  }
+  var prefix = "0".repeat(length);
+  return (prefix + num).slice(length * -1);
+};
+
 // generates a foursquare api url from parameters passed in (*Required)
 // *lat float latitude of location
 // *lng float longitude of location
@@ -122,7 +132,10 @@ var generateFoursquareReqUrl = function(lat, lng, radius, query) {
     return null;
   }
 
-  var reqUrl = "https://api.foursquare.com/v2/venues/explore?ll="+lat+","+lng+"&radius"+radius+"&venuePhotos=1&client_id=DOUDECYXSQ2TKZA0XM52MJNFSJZQ5OQ1QUU0TYSHKNHQWSDC&client_secret=CB2XICDAOYNEGVRVH5HBS2WXBQPWL5PTSFC2NW5SJWD0YI01&v="+(new Date().toLocaleFormat('%Y%m%d'));
+  var date = new Date();
+  var dateString = digits(date.getYear(), 4) + digits(date.getMonth(), 2) + digits(date.getDay(), 2);
+
+  var reqUrl = "https://api.foursquare.com/v2/venues/explore?ll="+lat+","+lng+"&radius"+radius+"&venuePhotos=1&client_id=DOUDECYXSQ2TKZA0XM52MJNFSJZQ5OQ1QUU0TYSHKNHQWSDC&client_secret=CB2XICDAOYNEGVRVH5HBS2WXBQPWL5PTSFC2NW5SJWD0YI01&v="+dateString;
   if (query) {
     // make sure to use stringify to prevent code injection
     if (!(safeQuery = stringify(query))) {
