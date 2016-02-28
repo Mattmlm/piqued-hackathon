@@ -21,6 +21,11 @@ var isString = function(obj) {
   return typeof(obj) == 'string';
 };
 
+// function to test whether obj is a string (*Required)
+var isFunction = function(obj) {
+  return typeof(obj) == 'function';
+};
+
 // function to get the first group of \w characters via regex (*Required)
 // *query string query to find the first non-symbol group in
 var stringify = function(query) {
@@ -66,7 +71,7 @@ var displayVenues = function(venues) {
 // ===
 // => calls displayVenues with the new list of venues
 var foursquareOnSuccess = function(callback) {
-  if (typeof(callback) !== 'function') {
+  if (!isFunction(callback)) {
     jsError("Invalid callback function", callback);
     return function(data) {};
   }
@@ -113,7 +118,7 @@ var foursquareOnSuccess = function(callback) {
 
 // make integers to a specific length
 var digits = function(num, length) {
-  if (typeof(num) !== 'number' || num < 0 || typeof(length) !== 'number' || length < 0) {
+  if (!isNumber(num) || num < 0 || !isNumber(num) || length < 0) {
     jsError("invalid args to digits", [num, length]);
     return null;
   }
